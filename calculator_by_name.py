@@ -26,10 +26,10 @@ def calc_op(my_dict, input_ops):
                 if elem not in my_dict and elem != "-" and elem != "+":
                     return f"{result_str} unknown"
                 else:
-                    if elem in my_dict:
-                        result.append(my_dict[elem])
                     if elem == "+" or elem == "-":
                         result.append(elem)
+                    else:
+                        result.append(my_dict[elem])
         ops_calc = eval("".join(result))
         return check_total(my_dict, ops_calc, result_str)
     else:
