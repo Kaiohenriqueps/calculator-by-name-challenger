@@ -10,11 +10,9 @@ def check_total(my_dict, ops_calc, result_str):
 
 def def_op(my_dict, input_ops):
     evals = input_ops[1:]
-    if my_dict:
-        my_dict[evals[0]] = evals[1]
-    else:
+    if not my_dict:
         my_dict = {}
-        my_dict[evals[0]] = evals[1]
+    my_dict[evals[0]] = evals[1]
     return my_dict
 
 
@@ -24,7 +22,6 @@ def calc_op(my_dict, input_ops):
     result = []
     if my_dict:
         for elem in evals:
-            print(f"elem: {elem}")
             if elem != "=":
                 if elem not in my_dict and elem != "-" and elem != "+":
                     return f"{result_str} unknown"
@@ -50,4 +47,3 @@ if __name__ == "__main__":
             print(calc_op(my_dict, input_ops))
         elif command == "clear":
             my_dict = None
-        print(f"my_dict: {my_dict}")
