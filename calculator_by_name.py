@@ -8,40 +8,46 @@ def check_total(my_dict, ops_calc, result_str):
     return f"{result_str} unknown"
 
 
+def def_op(my_dict, input_ops):
+    evals = input_ops[1:]
+    if my_dict:
+        my_dict[evals[0]] = evals[1]
+    else:
+        my_dict = {}
+        my_dict[evals[0]] = evals[1]
+    return my_dict
+
+
+def calc_op(my_dict, input_ops):
+    evals = input_ops[1:]
+    result_str = " ".join(input_ops[1:])
+    result = []
+    if my_dict:
+        for elem in evals:
+            print(f"elem: {elem}")
+            if elem != "=":
+                if elem not in my_dict and elem != "-" and elem != "+":
+                    return f"{result_str} unknown"
+                else:
+                    if elem in my_dict:
+                        result.append(my_dict[elem])
+                    if elem == "+" or elem == "-":
+                        result.append(elem)
+        ops_calc = eval("".join(result))
+        return check_total(my_dict, ops_calc, result_str)
+    else:
+        return f"{result_str} unknown"
+
+
 if __name__ == "__main__":
     my_dict = {}
     for input in sys.stdin:
         input_ops = input.split()
         command = input_ops[0]
         if command == "def":
-            if my_dict:
-                evals = input_ops[1:]
-                my_dict[evals[0]] = evals[1]
-            else:
-                my_dict = {}
-                evals = input_ops[1:]
-                my_dict[evals[0]] = evals[1]
+            my_dict = def_op(my_dict, input_ops)
         elif command == "calc":
-            evals = input_ops[1:]
-            result_str = " ".join(input_ops[1:])
-            result = []
-            not_in_dict = False
-            if my_dict:
-                for elem in evals:
-                    if elem == "=":
-                        continue
-                    if elem == "+" or elem == "-":
-                        result.append(elem)
-                    elif elem in my_dict:
-                        result.append(my_dict[elem])
-                    elif elem not in my_dict:
-                        print(f"{result_str} unknown")
-                        not_in_dict = True
-                        break
-                if not not_in_dict:
-                    ops_calc = eval("".join(result))
-                    print(check_total(my_dict, ops_calc, result_str))
-            else:
-                print(f"{result_str} unknown")
+            print(calc_op(my_dict, input_ops))
         elif command == "clear":
             my_dict = None
+        print(f"my_dict: {my_dict}")
